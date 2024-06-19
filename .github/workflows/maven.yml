@@ -46,6 +46,12 @@ jobs:
 
     - name: Output scan time details
       run: |
-          echo "Scan started at $(date -d @${{ steps.start_time.outputs.start_time }})"
-          echo "Scan ended at $(date -d @${{ steps.end_time.outputs.end_time }})"
-          echo "Total duration: ${{ steps.duration.outputs.duration }} seconds"
+          echo "Scan started at $(date -d @${{ steps.start_time.outputs.start_time }})" > checkrun_duration.txt
+          echo "Scan ended at $(date -d @${{ steps.end_time.outputs.end_time }})" >> checkrun_duration.txt
+          echo "Total duration: ${{ steps.duration.outputs.duration }} seconds" >> checkrun_duration.txt
+
+    - name: Upload duration file as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: checkrun-duration
+        path: checkrun_duration.txt
